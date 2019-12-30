@@ -1,6 +1,7 @@
 import React from 'react';
 
 function ProjectDetails({ match: { params } }) {
+  // const id = props.match.params.id
   const id = params.id;
   return (
     <div className='container section project-details'>

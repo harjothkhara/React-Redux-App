@@ -12,7 +12,7 @@ const SignedInLinks = () => {
       </li>
       <li>
         <NavLink to='/' className='btn btn-floating pink lighten-1'>
-          NN
+          HK
         </NavLink>
       </li>
     </ul>
