@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { signIn } from '../../store/actions/authAction';
 
 class SignIn extends Component {
   state = {
@@ -12,9 +14,11 @@ class SignIn extends Component {
   };
   handleSubmit = e => {
     e.preventDefault();
-    console.log(this.state);
+    // console.log(this.state);
+    this.props.signIn(this.state); //AC called...dispatching AC with creds on state
   };
   render() {
+    const { authError } = this.props;
     return (
       <div className='container'>
         <form onSubmit={this.handleSubmit} className='white'>
@@ -28,7 +32,11 @@ class SignIn extends Component {
             <input type='password' id='password' onChange={this.handleChange} />
           </div>
           <div className='input-field'>
-            <button className='btn pink lighten-1 z-depth-0'>Log In</button>
+            <button className='btn pink lighten-1 z-depth-0'>Login</button>
+            <div className='red-text center'>
+              {/* returns true if there's a string, something there otherwise return nothing */}
+              {authError ? <p>{authError}</p> : null}
+            </div>
           </div>
         </form>
       </div>
@@ -36,4 +44,17 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn;
+const mapStateToProps = state => {
+  return {
+    authError: state.auth.authError
+  };
+};
+
+// mapDispatchToProps so that we can make a dispatch from this component and call this action creator
+const mapDispatchToProps = dispatch => {
+  return {
+    signIn: creds => dispatch(signIn(creds))
+  };
+};
+//mapStateToProps was null before
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
