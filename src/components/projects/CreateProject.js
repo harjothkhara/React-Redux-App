@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createProject } from '../../store/actions/projectActions';
+import { Redirect } from 'react-router-dom';
 
 class CreateProject extends Component {
   state = {
@@ -18,6 +19,8 @@ class CreateProject extends Component {
     this.props.createProject(this.state);
   };
   render() {
+    const { auth } = this.props;
+    if (!auth.uid) return <Redirect to='/signin' />; // if this doesn't exist (no uid on the auth object on the redux store) then redirect the user to the sign in page, otherwise show the jsx below
     return (
       <div className='container'>
         <form onSubmit={this.handleSubmit} className='white'>
@@ -42,6 +45,13 @@ class CreateProject extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    auth: state.firebase.auth
+  };
+};
+
 // allows you to use a function as a prop
 const mapDispatchToProps = dispatch => {
   return {
@@ -49,4 +59,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(CreateProject);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateProject);
